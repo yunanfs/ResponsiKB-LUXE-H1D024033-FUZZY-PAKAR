@@ -1,0 +1,27 @@
+=======================================================
+    LUXE — Hasil Diagnosa Keaslian Tas Mewah
+=======================================================
+
+Tanggal : 24 April 2026, 08:55
+Merek   : Hermès
+Skor    : 30/100
+Verdict : Non-Authentic
+
+── Atribut Fisik ──
+  Kualitas Jahitan      : Acceptable
+  Hardware              : Non-authentic
+  Dokumentasi           : Partial
+  Material              : Uncertain
+
+── Rule Aktif ──
+  [R02]
+  [R06]
+  [R08]
+  [R11]
+
+── Rekomendasi ──
+  1. Produk ini tidak memiliki nilai investasi sebagai luxury asset.
+  2. Penjualan produk tiruan Hermès melanggar UU Merek No. 20 Tahun 2016.
+  3. Gunakan Vestiaire Collective atau The Real Real untuk pembelian aman.
+
+=======================================================

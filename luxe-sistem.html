@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUXE — Intelligent Luxury Systems</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Montserrat:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #C9A84C;
+  --gold-light: #E8C97A;
+  --gold-pale: #F5E6C0;
+  --black: #080808;
+  --dark: #0F0F0D;
+  --dark2: #161612;
+  --dark3: #1E1E18;
+  --cream: #F7F0E3;
+  --muted: rgba(201,168,76,0.18);
+  --text-dim: rgba(247,240,227,0.45);
+  --text-mid: rgba(247,240,227,0.72);
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; font-size: 16px; }
+
+body {
+  background: var(--black);
+  color: var(--cream);
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* CUSTOM CURSOR */
+.cursor {
+  position: fixed; top: 0; left: 0; z-index: 9999;
+  pointer-events: none; mix-blend-mode: difference;
+}
+.cursor-dot {
+  width: 6px; height: 6px; background: var(--gold-light);
+  border-radius: 50%; position: absolute;
+  transform: translate(-50%, -50%);
+  transition: transform .12s ease;
+}
+.cursor-ring {
+  width: 32px; height: 32px;
+  border: 1px solid rgba(201,168,76,0.5);
+  border-radius: 50%; position: absolute;
+  transform: translate(-50%, -50%);
+  transition: width .25s ease, height .25s ease, transform .08s ease;
+}
+body:hover .cursor-ring { }
+a:hover ~ .cursor .cursor-ring,
+button:hover ~ .cursor .cursor-ring { width: 48px; height: 48px; }
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 2rem 4rem;
+  background: linear-gradient(to bottom, rgba(8,8,8,0.95) 0%, transparent 100%);
+  transition: background .4s;
+}
+nav.scrolled { background: rgba(8,8,8,0.97); border-bottom: 1px solid rgba(201,168,76,0.12); }
+
+.nav-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.6rem; font-weight: 300; letter-spacing: .35em;
+  color: var(--gold-light); text-decoration: none;
+}
+.nav-logo span { color: var(--cream); }
+
+.nav-links { display: flex; gap: 3rem; list-style: none; }
+.nav-links a {
+  font-size: .65rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--text-mid); text-decoration: none;
+  transition: color .3s; font-weight: 400;
+}
+.nav-links a:hover { color: var(--gold-light); }
+
+/* HERO */
+.hero {
+  min-height: 100vh; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  position: relative; overflow: hidden;
+  text-align: center; padding: 0 2rem;
+}
+
+.hero-bg {
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 40%, rgba(201,168,76,0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, rgba(201,168,76,0.04) 0%, transparent 60%),
+    var(--black);
+}
+
+.hero-line {
+  position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+  width: 600px; height: 600px; border-radius: 50%;
+  border: 1px solid rgba(201,168,76,0.08);
+  animation: pulse-ring 6s ease-in-out infinite;
+}
+.hero-line:nth-child(2) { width: 800px; height: 800px; animation-delay: 2s; }
+.hero-line:nth-child(3) { width: 1000px; height: 1000px; animation-delay: 4s; }
+
+@keyframes pulse-ring {
+  0%, 100% { opacity: .5; transform: translate(-50%,-50%) scale(1); }
+  50% { opacity: .15; transform: translate(-50%,-50%) scale(1.02); }
+}
+
+.hero-eyebrow {
+  font-size: .6rem; letter-spacing: .5em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2rem; font-weight: 400;
+  opacity: 0; animation: fadeUp .8s .3s forwards;
+}
+.hero-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(3rem, 8vw, 7rem); font-weight: 300;
+  line-height: 1.05; letter-spacing: .04em;
+  color: var(--cream); margin-bottom: 1rem;
+  opacity: 0; animation: fadeUp .9s .5s forwards;
+}
+.hero-title em { font-style: italic; color: var(--gold-light); }
+.hero-sub {
+  font-size: .7rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: 3.5rem; font-weight: 300;
+  opacity: 0; animation: fadeUp .9s .7s forwards;
+}
+
+.hero-ctas {
+  display: flex; gap: 1.5rem; justify-content: center;
+  opacity: 0; animation: fadeUp .9s .9s forwards;
+}
+
+.btn-gold {
+  padding: .85rem 2.5rem; border: 1px solid var(--gold);
+  background: transparent; color: var(--gold-light);
+  font-family: 'Montserrat', sans-serif; font-size: .65rem;
+  letter-spacing: .25em; text-transform: uppercase; cursor: none;
+  transition: background .3s, color .3s; font-weight: 400;
+  text-decoration: none; display: inline-block;
+}
+.btn-gold:hover { background: var(--gold); color: var(--black); }
+.btn-ghost {
+  padding: .85rem 2.5rem; border: 1px solid rgba(247,240,227,0.2);
+  background: transparent; color: var(--text-mid);
+  font-family: 'Montserrat', sans-serif; font-size: .65rem;
+  letter-spacing: .25em; text-transform: uppercase; cursor: none;
+  transition: border-color .3s, color .3s; font-weight: 400;
+  text-decoration: none; display: inline-block;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold-light); }
+
+.scroll-indicator {
+  position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: .5rem;
+  opacity: 0; animation: fadeIn 1s 1.4s forwards;
+}
+.scroll-line {
+  width: 1px; height: 60px; background: linear-gradient(to bottom, transparent, var(--gold));
+  animation: scroll-pulse 2s ease-in-out infinite;
+}
+@keyframes scroll-pulse {
+  0%,100% { opacity: .3; transform: scaleY(.8); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+.scroll-txt { font-size: .5rem; letter-spacing: .3em; color: var(--text-dim); text-transform: uppercase; }
+
+/* DIVIDER */
+.divider-gold {
+  width: 100%; display: flex; align-items: center; gap: 1.5rem;
+  padding: 0 4rem; margin: 1rem 0;
+}
+.divider-gold::before, .divider-gold::after {
+  content: ''; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.4), transparent);
+}
+.divider-gold-icon { color: var(--gold); font-size: .7rem; flex-shrink: 0; }
+
+/* SECTIONS */
+section { padding: 7rem 4rem; }
+
+.section-eyebrow {
+  font-size: .58rem; letter-spacing: .45em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.2rem; font-weight: 400;
+}
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 300;
+  color: var(--cream); line-height: 1.2; margin-bottom: 1.5rem;
+}
+.section-title em { font-style: italic; color: var(--gold-light); }
+
+/* SYSTEM CARDS */
+.systems-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+  max-width: 1200px; margin: 0 auto;
+}
+
+.sys-card {
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.15);
+  padding: 3rem; position: relative; overflow: hidden;
+  transition: border-color .4s, transform .4s;
+  cursor: none;
+}
+.sys-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 60% at 50% 0%, rgba(201,168,76,0.05), transparent);
+  opacity: 0; transition: opacity .4s;
+}
+.sys-card:hover { border-color: rgba(201,168,76,0.4); transform: translateY(-4px); }
+.sys-card:hover::before { opacity: 1; }
+
+.sys-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 5rem; font-weight: 300; color: rgba(201,168,76,0.12);
+  position: absolute; top: 1.5rem; right: 2rem; line-height: 1;
+}
+.sys-tag {
+  display: inline-block; font-size: .55rem; letter-spacing: .3em;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1.5rem;
+  border: 1px solid rgba(201,168,76,0.3); padding: .3rem .8rem; font-weight: 400;
+}
+.sys-card h3 {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.8rem; font-weight: 300; color: var(--cream);
+  margin-bottom: .75rem; line-height: 1.2;
+}
+.sys-card p {
+  font-size: .75rem; color: var(--text-dim); line-height: 1.9;
+  margin-bottom: 2rem; font-weight: 300;
+}
+.sys-arrow {
+  font-size: .6rem; letter-spacing: .2em; color: var(--gold);
+  text-transform: uppercase; font-weight: 400;
+  display: flex; align-items: center; gap: .75rem;
+}
+.sys-arrow::after {
+  content: ''; display: block; width: 40px; height: 1px;
+  background: var(--gold); transition: width .3s;
+}
+.sys-card:hover .sys-arrow::after { width: 70px; }
+
+/* APP SECTIONS */
+.app-section {
+  background: var(--dark); border-top: 1px solid rgba(201,168,76,0.1);
+  padding: 0;
+}
+
+.app-header {
+  padding: 5rem 4rem 3rem;
+  border-bottom: 1px solid rgba(201,168,76,0.1);
+}
+
+.app-body { padding: 4rem; }
+
+/* FUZZY APP */
+.fuzzy-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }
+
+.input-group { margin-bottom: 2.5rem; }
+.input-label {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-bottom: 1rem;
+}
+.input-label-txt {
+  font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
+  color: var(--text-mid); font-weight: 400;
+}
+.input-val {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.4rem; font-weight: 300; color: var(--gold-light);
+}
+
+.range-track {
+  position: relative; height: 2px;
+  background: rgba(201,168,76,0.15); margin-bottom: .75rem;
+}
+.range-fill {
+  position: absolute; left: 0; top: 0; height: 100%;
+  background: linear-gradient(to right, rgba(201,168,76,0.3), var(--gold));
+  transition: width .3s ease; border-radius: 1px;
+}
+input[type=range] {
+  -webkit-appearance: none; appearance: none;
+  width: 100%; background: transparent;
+  position: absolute; top: 50%; transform: translateY(-50%);
+  left: 0; cursor: none; height: 20px; margin: 0;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--gold); border: 2px solid var(--black);
+  cursor: none; box-shadow: 0 0 10px rgba(201,168,76,0.4);
+}
+input[type=range]::-webkit-slider-runnable-track { background: transparent; }
+
+.select-luxury {
+  width: 100%; padding: .9rem 1rem;
+  background: var(--dark3); border: 1px solid rgba(201,168,76,0.2);
+  color: var(--cream); font-family: 'Montserrat', sans-serif;
+  font-size: .7rem; font-weight: 300; letter-spacing: .05em;
+  cursor: none; outline: none; appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23C9A84C' stroke-width='1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat; background-position: right 1rem center;
+  transition: border-color .3s;
+}
+.select-luxury:focus { border-color: var(--gold); }
+.select-luxury option { background: var(--dark2); }
+
+/* RESULT PANEL */
+.result-panel {
+  background: var(--dark3); border: 1px solid rgba(201,168,76,0.2);
+  padding: 2.5rem; position: relative; overflow: hidden;
+  transition: border-color .5s;
+}
+.result-panel.ideal { border-color: rgba(201,168,76,0.5); }
+.result-panel.warning { border-color: rgba(239,159,39,0.5); }
+.result-panel.danger { border-color: rgba(226,75,74,0.4); }
+
+.result-panel::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+  opacity: 0; transition: opacity .5s;
+}
+.result-panel.ideal::before { opacity: 1; }
+
+.result-score-row {
+  display: flex; align-items: flex-end; gap: 1rem; margin-bottom: 2rem;
+  padding-bottom: 2rem; border-bottom: 1px solid rgba(201,168,76,0.12);
+}
+.result-score-big {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 5rem; font-weight: 300; line-height: 1;
+  color: var(--gold-light); transition: color .5s;
+}
+.result-score-meta { }
+.result-score-label {
+  font-size: .55rem; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--text-dim); display: block; margin-bottom: .4rem;
+}
+.result-status {
+  font-size: .65rem; letter-spacing: .15em; font-weight: 400;
+  padding: .3rem .9rem; display: inline-block;
+}
+.status-ideal { background: rgba(201,168,76,0.15); color: var(--gold-light); border: 1px solid rgba(201,168,76,0.3); }
+.status-ok { background: rgba(239,159,39,0.12); color: #EF9F27; border: 1px solid rgba(239,159,39,0.3); }
+.status-bad { background: rgba(226,75,74,0.1); color: #E24B4A; border: 1px solid rgba(226,75,74,0.25); }
+
+.result-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.5rem; font-weight: 300; color: var(--cream);
+  margin-bottom: .75rem;
+}
+.result-desc {
+  font-size: .72rem; color: var(--text-dim); line-height: 1.85; font-weight: 300;
+  margin-bottom: 1.75rem;
+}
+.result-recs { list-style: none; }
+.result-recs li {
+  font-size: .68rem; color: var(--text-mid); line-height: 1.7;
+  padding: .6rem 0; border-bottom: 1px solid rgba(201,168,76,0.07);
+  display: flex; gap: .75rem; align-items: flex-start; font-weight: 300;
+}
+.result-recs li:last-child { border-bottom: none; }
+.rec-bullet {
+  width: 4px; height: 4px; border-radius: 50%; background: var(--gold);
+  flex-shrink: 0; margin-top: .5rem;
+}
+
+/* GAUGE */
+.gauge-wrap { position: relative; width: 140px; height: 72px; margin: 0 auto 1.5rem; }
+.gauge-svg { width: 100%; height: 100%; }
+
+/* PAKAR / EXPERT APP */
+.pakar-layout { display: grid; grid-template-columns: 1.1fr 1fr; gap: 4rem; align-items: start; }
+
+.q-block { margin-bottom: 2rem; }
+.q-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: .85rem; color: var(--gold); margin-bottom: .4rem; display: block;
+}
+.q-text {
+  font-size: .72rem; color: var(--cream); letter-spacing: .04em;
+  margin-bottom: 1rem; line-height: 1.6; font-weight: 400;
+}
+.opts { display: flex; flex-wrap: wrap; gap: .5rem; }
+.opt {
+  padding: .55rem 1.1rem; border: 1px solid rgba(201,168,76,0.2);
+  background: transparent; color: var(--text-dim);
+  font-family: 'Montserrat', sans-serif; font-size: .62rem;
+  letter-spacing: .08em; cursor: none; transition: all .25s; font-weight: 300;
+}
+.opt:hover { border-color: rgba(201,168,76,0.5); color: var(--text-mid); }
+.opt.selected { border-color: var(--gold); background: rgba(201,168,76,0.1); color: var(--gold-light); }
+
+.diagnose-btn {
+  width: 100%; padding: 1.1rem;
+  background: transparent; border: 1px solid var(--gold);
+  color: var(--gold-light); font-family: 'Montserrat', sans-serif;
+  font-size: .65rem; letter-spacing: .3em; text-transform: uppercase;
+  cursor: none; transition: all .3s; margin-top: 1rem; font-weight: 400;
+  position: relative; overflow: hidden;
+}
+.diagnose-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--gold); transform: scaleX(0); transform-origin: left;
+  transition: transform .35s ease; z-index: 0;
+}
+.diagnose-btn span { position: relative; z-index: 1; }
+.diagnose-btn:hover::before { transform: scaleX(1); }
+.diagnose-btn:hover { color: var(--black); }
+
+/* PAKAR RESULT */
+.pakar-result-panel {
+  background: var(--dark3); border: 1px solid rgba(201,168,76,0.15);
+  padding: 2.5rem; opacity: 0; transform: translateY(20px);
+  transition: all .6s ease; pointer-events: none;
+}
+.pakar-result-panel.visible {
+  opacity: 1; transform: translateY(0); pointer-events: all;
+}
+.authenticity-score {
+  text-align: center; padding-bottom: 2rem; margin-bottom: 2rem;
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+}
+.auth-big {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 4.5rem; font-weight: 300; color: var(--gold-light);
+  line-height: 1; display: block;
+}
+.auth-sublabel {
+  font-size: .55rem; letter-spacing: .4em; text-transform: uppercase;
+  color: var(--text-dim); display: block; margin-top: .3rem;
+}
+.auth-bar { height: 2px; background: rgba(201,168,76,0.12); margin: 1.5rem 0 .5rem; }
+.auth-bar-fill { height: 100%; background: linear-gradient(to right, rgba(201,168,76,0.2), var(--gold)); transition: width .8s .3s ease; }
+
+.verdict-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; margin: 1.5rem 0; }
+.verdict-item {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .6rem 0; border-bottom: 1px solid rgba(201,168,76,0.07);
+}
+.verdict-item:last-child { border: none; }
+.verdict-key { font-size: .62rem; color: var(--text-dim); letter-spacing: .1em; text-transform: uppercase; }
+.verdict-val { font-size: .68rem; color: var(--cream); font-weight: 400; }
+.verdict-val.good { color: var(--gold-light); }
+.verdict-val.warn { color: #EF9F27; }
+.verdict-val.bad { color: #E24B4A; }
+
+.invest-items { margin-top: 1.5rem; }
+.invest-item {
+  padding: .75rem 0; border-bottom: 1px solid rgba(201,168,76,0.07);
+  display: flex; gap: .75rem; align-items: flex-start;
+}
+.invest-item:last-child { border: none; }
+.invest-dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; margin-top: .5rem; }
+.invest-txt { font-size: .68rem; color: var(--text-dim); line-height: 1.7; font-weight: 300; }
+
+/* PROGRESS DOTS */
+.progress-dots { display: flex; gap: .4rem; margin-bottom: 2rem; }
+.pd { width: 20px; height: 2px; background: rgba(201,168,76,0.2); transition: background .3s; }
+.pd.filled { background: var(--gold); }
+
+/* MODAL OVERLAY */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 500;
+  background: rgba(8,8,8,0); backdrop-filter: blur(0px);
+  display: flex; align-items: center; justify-content: center;
+  pointer-events: none;
+  transition: background .5s ease, backdrop-filter .5s ease;
+  padding: 2rem;
+}
+.modal-overlay.open {
+  background: rgba(8,8,8,0.82); backdrop-filter: blur(8px);
+  pointer-events: all;
+}
+.modal-box {
+  background: var(--dark2);
+  border: 1px solid rgba(201,168,76,0.25);
+  width: 100%; max-width: 600px; max-height: 88vh;
+  overflow-y: auto; position: relative;
+  opacity: 0; transform: translateY(40px) scale(0.97);
+  transition: opacity .55s cubic-bezier(.16,1,.3,1), transform .55s cubic-bezier(.16,1,.3,1);
+}
+.modal-overlay.open .modal-box {
+  opacity: 1; transform: translateY(0) scale(1);
+}
+.modal-top-bar {
+  position: sticky; top: 0; z-index: 10;
+  background: var(--dark2);
+  border-bottom: 1px solid rgba(201,168,76,0.12);
+  padding: 1.25rem 1.75rem;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.modal-top-label {
+  font-size: .55rem; letter-spacing: .4em; text-transform: uppercase;
+  color: var(--gold); font-weight: 400;
+}
+.modal-close {
+  width: 32px; height: 32px; border: 1px solid rgba(201,168,76,0.2);
+  background: transparent; color: var(--text-dim);
+  font-size: 1rem; cursor: none; display: flex;
+  align-items: center; justify-content: center;
+  transition: all .25s; font-family: 'Montserrat', sans-serif;
+}
+.modal-close:hover { border-color: var(--gold); color: var(--gold-light); }
+.modal-body { padding: 2rem 1.75rem 2.5rem; }
+
+/* Score reveal animation */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.modal-score-big {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 6rem; font-weight: 300; color: var(--gold-light);
+  line-height: 1; display: block; text-align: center;
+  animation: countUp .6s .25s both;
+}
+.modal-score-label {
+  font-size: .55rem; letter-spacing: .4em; text-transform: uppercase;
+  color: var(--text-dim); display: block; text-align: center; margin-top: .3rem;
+  animation: countUp .6s .35s both;
+}
+.modal-divider {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+  margin: 1.75rem 0;
+}
+.modal-section-label {
+  font-size: .55rem; letter-spacing: .35em; text-transform: uppercase;
+  color: var(--text-dim); margin-bottom: .75rem; display: block;
+}
+.modal-verdict-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .65rem 0; border-bottom: 1px solid rgba(201,168,76,0.07);
+}
+.modal-verdict-row:last-child { border: none; }
+.modal-vkey { font-size: .62rem; color: var(--text-dim); letter-spacing: .1em; text-transform: uppercase; }
+.modal-vval { font-size: .68rem; font-weight: 400; }
+.modal-vval.good { color: var(--gold-light); }
+.modal-vval.warn { color: #EF9F27; }
+.modal-vval.bad { color: #E24B4A; }
+.modal-verdict-box {
+  padding: 1.25rem 1.5rem;
+  border: 1px solid rgba(201,168,76,0.15);
+  background: var(--dark3); margin: 1.25rem 0;
+}
+.modal-verdict-title {
+  font-size: .6rem; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: .5rem; display: block;
+}
+.modal-verdict-detail {
+  font-size: .72rem; color: var(--text-dim); line-height: 1.85; font-weight: 300;
+}
+.modal-invest-item {
+  padding: .75rem 0; border-bottom: 1px solid rgba(201,168,76,0.07);
+  display: flex; gap: .75rem; align-items: flex-start;
+}
+.modal-invest-item:last-child { border: none; }
+.modal-invest-dot { width: 4px; height: 4px; background: var(--gold); border-radius: 50%; flex-shrink: 0; margin-top: .55rem; }
+.modal-invest-txt { font-size: .7rem; color: var(--text-dim); line-height: 1.75; font-weight: 300; }
+.modal-bar-wrap { height: 2px; background: rgba(201,168,76,0.12); margin: 1.25rem 0 .4rem; overflow: hidden; }
+.modal-bar-fill { height: 100%; background: linear-gradient(to right, rgba(201,168,76,0.2), var(--gold)); width: 0; transition: width 1s .4s cubic-bezier(.16,1,.3,1); }
+
+/* Status badge */
+.modal-badge {
+  display: inline-block; font-size: .55rem; letter-spacing: .25em;
+  text-transform: uppercase; padding: .3rem 1rem; margin: .5rem auto 0;
+  border: 1px solid; font-weight: 400;
+}
+.badge-authentic { border-color: rgba(201,168,76,0.4); color: var(--gold-light); background: rgba(201,168,76,0.08); }
+.badge-uncertain { border-color: rgba(239,159,39,0.4); color: #EF9F27; background: rgba(239,159,39,0.08); }
+.badge-fake { border-color: rgba(226,75,74,0.35); color: #E24B4A; background: rgba(226,75,74,0.08); }
+
+/* FOOTER */
+footer {
+  background: var(--dark); border-top: 1px solid rgba(201,168,76,0.1);
+  padding: 4rem; text-align: center;
+}
+.footer-logo {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2rem; font-weight: 300; letter-spacing: .4em;
+  color: var(--gold-light); display: block; margin-bottom: 1rem;
+}
+.footer-txt { font-size: .6rem; letter-spacing: .2em; color: var(--text-dim); text-transform: uppercase; }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+.reveal {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity .8s ease, transform .8s ease;
+}
+.reveal.visible { opacity: 1; transform: none; }
+
+/* ORNAMENT */
+.orn {
+  text-align: center; font-family: 'Cormorant Garamond', serif;
+  font-size: 1.2rem; color: rgba(201,168,76,0.25); letter-spacing: .5em;
+  padding: 2rem 0;
+}
+
+/* SYSTEM TABS */
+.sys-tabs { display: flex; gap: 0; margin-bottom: 3rem; border-bottom: 1px solid rgba(201,168,76,0.15); }
+.sys-tab {
+  padding: 1rem 2.5rem; background: transparent;
+  border: none; border-bottom: 2px solid transparent;
+  color: var(--text-dim); font-family: 'Montserrat', sans-serif;
+  font-size: .6rem; letter-spacing: .25em; text-transform: uppercase;
+  cursor: none; transition: all .3s; font-weight: 400;
+  margin-bottom: -1px;
+}
+.sys-tab.active { color: var(--gold-light); border-bottom-color: var(--gold); }
+.sys-tab:hover { color: var(--text-mid); }
+
+.sys-panel { display: none; }
+.sys-panel.active { display: block; }
+
+/* SUBTLE GRID OVERLAY */
+.hero::after {
+  content: ''; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+  background-size: 80px 80px; pointer-events: none;
+}
+
+@media (max-width: 900px) {
+  nav { padding: 1.5rem 2rem; }
+  section { padding: 4rem 2rem; }
+  .systems-grid { grid-template-columns: 1fr; }
+  .fuzzy-layout, .pakar-layout { grid-template-columns: 1fr; }
+  .app-body, .app-header { padding: 2rem; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor">
+  <div class="cursor-dot" id="cursor-dot"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+</div>
+
+<nav id="nav">
+  <a class="nav-logo" href="#">LUXE<span>.</span></a>
+  <ul class="nav-links">
+    <li><a href="#systems">Sistem</a></li>
+    <li><a href="#fuzzy">Watch Advisor</a></li>
+    <li><a href="#pakar">Bag Authenticator</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+  <div class="hero-line"></div>
+  <div class="hero-line"></div>
+
+  <p class="hero-eyebrow">Intelligent Luxury Systems &nbsp;·&nbsp; Responsi KB</p>
+  <h1 class="hero-title">The Science of<br><em>Refined Living</em></h1>
+  <p class="hero-sub">Fuzzy Logic &nbsp;·&nbsp; Expert System &nbsp;·&nbsp; Luxury Intelligence</p>
+  <div class="hero-ctas">
+    <a href="#fuzzy" class="btn-gold">Watch Storage Advisor</a>
+    <a href="#pakar" class="btn-gold">Bag Authenticator</a>
+  </div>
+
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span class="scroll-txt">Scroll</span>
+  </div>
+</section>
+
+<!-- SYSTEMS OVERVIEW -->
+<section id="systems" style="background: var(--dark);">
+  <div class="reveal" style="max-width:1200px; margin: 0 auto;">
+    <p class="section-eyebrow">Dua Sistem Cerdas</p>
+    <h2 class="section-title">Kecerdasan untuk<br>Barang <em>Paling Berharga</em> Anda</h2>
+  </div>
+  <div class="orn reveal">✦ &nbsp;&nbsp; ✦ &nbsp;&nbsp; ✦</div>
+  <div class="systems-grid reveal">
+    <div class="sys-card" onclick="scrollTo('#fuzzy')">
+      <div class="sys-num">01</div>
+      <div class="sys-tag">Sistem Fuzzy — Mamdani</div>
+      <h3>Luxury Watch<br>Storage Advisor</h3>
+      <p>Analisis kondisi penyimpanan jam tangan mewah secara real-time menggunakan logika fuzzy. Sistem mempertimbangkan suhu, kelembapan, dan jenis gerakan mekanik untuk melindungi investasi horological Anda.</p>
+      <div class="sys-arrow">Explore System</div>
+    </div>
+    <div class="sys-card" onclick="scrollTo('#pakar')">
+      <div class="sys-num">02</div>
+      <div class="sys-tag">Sistem Pakar — Forward Chaining</div>
+      <h3>Luxury Bag<br>Authenticity Advisor</h3>
+      <p>Diagnosa keaslian dan potensi investasi tas mewah melalui analisis atribut fisik multi-dimensi. Sistem pakar berbasis pengetahuan ahli authentication internasional.</p>
+      <div class="sys-arrow">Explore System</div>
+    </div>
+  </div>
+</section>
+
+<!-- FUZZY SYSTEM -->
+<div class="app-section" id="fuzzy">
+  <div class="app-header reveal">
+    <p class="section-eyebrow">Sistem 01 &nbsp;·&nbsp; Fuzzy Logic</p>
+    <h2 class="section-title">Luxury Watch<br><em>Storage Advisor</em></h2>
+    <p style="font-size:.75rem; color:var(--text-dim); max-width:520px; line-height:1.9; font-weight:300;">
+      Setiap jam tangan mewah memiliki kebutuhan lingkungan spesifik. Sistem fuzzy ini mengevaluasi kondisi penyimpanan Anda dan memberikan rekomendasi berbasis kecerdasan buatan.
+    </p>
+  </div>
+
+  <div class="app-body">
+    <div class="fuzzy-layout">
+      <!-- INPUTS -->
+      <div class="reveal">
+        <div class="input-group">
+          <div class="input-label">
+            <span class="input-label-txt">Suhu Ruangan</span>
+            <span class="input-val" id="suhu-display">22°C</span>
+          </div>
+          <div class="range-track">
+            <div class="range-fill" id="suhu-fill" style="width:44%"></div>
+            <input type="range" min="0" max="50" value="22" id="suhu-range" oninput="updateFuzzy()">
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:.4rem">
+            <span style="font-size:.55rem;color:var(--text-dim)">0°C</span>
+            <span style="font-size:.55rem;color:var(--text-dim)">50°C</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            <span class="input-label-txt">Kelembapan Relatif</span>
+            <span class="input-val" id="humid-display">45%</span>
+          </div>
+          <div class="range-track">
+            <div class="range-fill" id="humid-fill" style="width:45%"></div>
+            <input type="range" min="0" max="100" value="45" id="humid-range" oninput="updateFuzzy()">
+          </div>
+          <div style="display:flex;justify-content:space-between;margin-top:.4rem">
+            <span style="font-size:.55rem;color:var(--text-dim)">0%</span>
+            <span style="font-size:.55rem;color:var(--text-dim)">100%</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            <span class="input-label-txt">Jenis Jam</span>
+          </div>
+          <select class="select-luxury" id="jenis-jam" onchange="updateFuzzy()">
+            <option value="mechanical">Mechanical / Automatic — Rolex, Patek Philippe</option>
+            <option value="quartz">High-end Quartz — Grand Seiko, Longines</option>
+            <option value="smartlux">Smart Luxury — Apple Hermès, TAG Heuer Connected</option>
+          </select>
+        </div>
+
+        <div class="input-group">
+          <div class="input-label">
+            <span class="input-label-txt">Durasi Penyimpanan</span>
+          </div>
+          <select class="select-luxury" id="durasi" onchange="updateFuzzy()">
+            <option value="short">Harian — dipakai rutin</option>
+            <option value="medium">Mingguan — rotasi koleksi</option>
+            <option value="long">Bulanan — long-term storage</option>
+          </select>
+        </div>
+
+        <!-- MEMBERSHIP VISUALIZATION -->
+        <div style="margin-top:2rem; padding:1.5rem; background:var(--dark3); border:1px solid rgba(201,168,76,0.12);">
+          <p style="font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1rem;">Derajat Keanggotaan Fuzzy</p>
+          <div style="margin-bottom:.75rem">
+            <div style="display:flex;justify-content:space-between;margin-bottom:.3rem">
+              <span style="font-size:.6rem;color:var(--text-dim)">µ Suhu</span>
+              <span style="font-size:.6rem;color:var(--gold)" id="mu-suhu-txt">0.88</span>
+            </div>
+            <div style="height:3px;background:rgba(201,168,76,0.1)">
+              <div id="mu-suhu" style="height:100%;background:var(--gold);transition:width .4s ease;width:88%"></div>
+            </div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:.3rem">
+              <span style="font-size:.6rem;color:var(--text-dim)">µ Kelembapan</span>
+              <span style="font-size:.6rem;color:var(--gold)" id="mu-humid-txt">0.91</span>
+            </div>
+            <div style="height:3px;background:rgba(201,168,76,0.1)">
+              <div id="mu-humid" style="height:100%;background:var(--gold);transition:width .4s ease;width:91%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RESULT -->
+      <div class="reveal" style="transition-delay:.2s">
+        <div class="result-panel ideal" id="result-panel">
+          <div class="result-score-row">
+            <div class="result-score-big" id="result-score">88</div>
+            <div class="result-score-meta">
+              <span class="result-score-label">Skor Kondisi</span>
+              <span class="result-status status-ideal" id="result-status">Kondisi Ideal</span>
+            </div>
+          </div>
+
+          <h3 class="result-title" id="result-title">Penyimpanan Optimal</h3>
+          <p class="result-desc" id="result-desc">
+            Lingkungan penyimpanan berada dalam rentang ideal untuk jam mekanik. Komponen internal, lubrikasi, dan gasket terlindungi secara optimal.
+          </p>
+
+          <p style="font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--text-dim);margin-bottom:1rem;">Rekomendasi</p>
+          <ul class="result-recs" id="result-recs">
+            <li><div class="rec-bullet"></div>Pertahankan kondisi penyimpanan yang ada saat ini.</li>
+            <li><div class="rec-bullet"></div>Gunakan watch winder jika jam automatic tidak dipakai lebih dari 2 hari.</li>
+            <li><div class="rec-bullet"></div>Servis mekanik berkala setiap 3–5 tahun di service center resmi.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="orn">◆</div>
+
+<!-- PAKAR SYSTEM -->
+<div class="app-section" id="pakar">
+  <div class="app-header reveal">
+    <p class="section-eyebrow">Sistem 02 &nbsp;·&nbsp; Expert System</p>
+    <h2 class="section-title">Luxury Bag<br><em>Authenticity Advisor</em></h2>
+    <p style="font-size:.75rem; color:var(--text-dim); max-width:520px; line-height:1.9; font-weight:300;">
+      Sistem pakar berbasis forward chaining yang menganalisis keaslian dan nilai investasi tas mewah melalui lima dimensi atribut fisik dan dokumentasi.
+    </p>
+  </div>
+
+  <div class="app-body">
+    <div class="pakar-layout">
+      <!-- QUESTIONS -->
+      <div class="reveal">
+        <div class="progress-dots" id="prog-dots">
+          <div class="pd" id="pd0"></div>
+          <div class="pd" id="pd1"></div>
+          <div class="pd" id="pd2"></div>
+          <div class="pd" id="pd3"></div>
+          <div class="pd" id="pd4"></div>
+        </div>
+
+        <div class="q-block">
+          <span class="q-num">I.</span>
+          <div class="q-text">Merek tas yang dievaluasi</div>
+          <div class="opts">
+            <button class="opt" data-q="brand" data-v="hermes" onclick="selectOpt(this)">Hermès</button>
+            <button class="opt" data-q="brand" data-v="chanel" onclick="selectOpt(this)">Chanel</button>
+            <button class="opt" data-q="brand" data-v="lv" onclick="selectOpt(this)">Louis Vuitton</button>
+            <button class="opt" data-q="brand" data-v="other" onclick="selectOpt(this)">Lainnya</button>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <span class="q-num">II.</span>
+          <div class="q-text">Kualitas jahitan pada seluruh sisi tas</div>
+          <div class="opts">
+            <button class="opt" data-q="jahitan" data-v="sempurna" onclick="selectOpt(this)">Sempurna & seragam</button>
+            <button class="opt" data-q="jahitan" data-v="minor" onclick="selectOpt(this)">Sedikit tidak rata</button>
+            <button class="opt" data-q="jahitan" data-v="buruk" onclick="selectOpt(this)">Tidak konsisten</button>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <span class="q-num">III.</span>
+          <div class="q-text">Kondisi hardware — kunci, gesper, zipper pull</div>
+          <div class="opts">
+            <button class="opt" data-q="hw" data-v="solid" onclick="selectOpt(this)">Berat, solid, berlogo</button>
+            <button class="opt" data-q="hw" data-v="medium" onclick="selectOpt(this)">Cukup solid</button>
+            <button class="opt" data-q="hw" data-v="ringan" onclick="selectOpt(this)">Ringan, tanpa logo</button>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <span class="q-num">IV.</span>
+          <div class="q-text">Kelengkapan dokumen & aksesori</div>
+          <div class="opts">
+            <button class="opt" data-q="dok" data-v="lengkap" onclick="selectOpt(this)">Receipt + dustbag + box</button>
+            <button class="opt" data-q="dok" data-v="partial" onclick="selectOpt(this)">Sebagian ada</button>
+            <button class="opt" data-q="dok" data-v="tidak" onclick="selectOpt(this)">Tidak ada dokumen</button>
+          </div>
+        </div>
+
+        <div class="q-block">
+          <span class="q-num">V.</span>
+          <div class="q-text">Aroma dan tekstur material kulit</div>
+          <div class="opts">
+            <button class="opt" data-q="aroma" data-v="genuine" onclick="selectOpt(this)">Kulit natural, aroma earthy</button>
+            <button class="opt" data-q="aroma" data-v="chemical" onclick="selectOpt(this)">Sedikit bau kimia</button>
+            <button class="opt" data-q="aroma" data-v="plastik" onclick="selectOpt(this)">Bau plastik / lem</button>
+          </div>
+        </div>
+
+        <button class="diagnose-btn" onclick="runDiagnosis()"><span>Jalankan Diagnosa &nbsp;›</span></button>
+      </div>
+
+      <!-- RESULT PANEL -->
+      <div class="reveal" style="transition-delay:.2s">
+        <div class="pakar-result-panel" id="pakar-panel">
+          <div class="authenticity-score">
+            <span class="auth-big" id="auth-score">—</span>
+            <span class="auth-sublabel">Skor Keaslian / 100</span>
+            <div class="auth-bar">
+              <div class="auth-bar-fill" id="auth-bar" style="width:0%"></div>
+            </div>
+          </div>
+
+          <div style="margin-bottom:1.5rem">
+            <p style="font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--text-dim);margin-bottom:.75rem;">Atribut Fisik</p>
+            <div class="verdict-grid" id="verdict-grid"></div>
+          </div>
+
+          <div style="padding:1.25rem;background:var(--dark2);border:1px solid rgba(201,168,76,0.12);margin-bottom:1.5rem">
+            <p style="font-size:.6rem;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem" id="verdict-title">—</p>
+            <p style="font-size:.7rem;color:var(--text-dim);line-height:1.8;font-weight:300" id="verdict-detail">—</p>
+          </div>
+
+          <p style="font-size:.55rem;letter-spacing:.3em;text-transform:uppercase;color:var(--text-dim);margin-bottom:.75rem;">Potensi Investasi</p>
+          <div class="invest-items" id="invest-items"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-logo">LUXE.</span>
+  <p class="footer-txt">Intelligent Luxury Systems &nbsp;·&nbsp; Responsi Kecerdasan Buatan</p>
+  <div class="divider-gold" style="margin-top:2rem;padding:0"><div></div><div></div></div>
+  <p style="font-size:.55rem;color:var(--text-dim);letter-spacing:.15em;margin-top:1rem">
+    Fuzzy Logic (Mamdani) &nbsp;·&nbsp; Expert System (Forward Chaining) &nbsp;·&nbsp; Luxury Intelligence
+  </p>
+</footer>
+
+<!-- RESULT MODAL -->
+<div class="modal-overlay" id="result-modal" onclick="closeModal(event)">
+  <div class="modal-box" id="modal-box">
+    <div class="modal-top-bar">
+      <span class="modal-top-label">Luxury Bag — Hasil Diagnosa</span>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div style="text-align:center; padding-bottom:.5rem">
+        <span class="modal-score-big" id="modal-score">—</span>
+        <span class="modal-score-label">Skor Keaslian / 100</span>
+        <div style="display:flex;justify-content:center;margin-top:.75rem">
+          <span class="modal-badge" id="modal-badge">—</span>
+        </div>
+      </div>
+      <div class="modal-bar-wrap"><div class="modal-bar-fill" id="modal-bar"></div></div>
+      <div class="modal-divider"></div>
+      <span class="modal-section-label">Atribut Fisik</span>
+      <div id="modal-verdict-grid"></div>
+      <div class="modal-verdict-box">
+        <span class="modal-verdict-title" id="modal-vtitle">—</span>
+        <p class="modal-verdict-detail" id="modal-vdetail">—</p>
+      </div>
+      <span class="modal-section-label">Potensi Investasi</span>
+      <div id="modal-invest"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// === CURSOR ===
+const dot = document.getElementById('cursor-dot');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+function animateCursor() {
+  dot.style.left = mx + 'px'; dot.style.top = my + 'px';
+  rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+  ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+  requestAnimationFrame(animateCursor);
+}
+animateCursor();
+
+// === NAV SCROLL ===
+window.addEventListener('scroll', () => {
+  document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// === REVEAL ON SCROLL ===
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+}, { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+function scrollTo(hash) { document.querySelector(hash).scrollIntoView({ behavior: 'smooth' }); }
+
+// === FUZZY LOGIC ===
+function calcMembership(val, lo, hi, minR, maxR) {
+  if (val >= lo && val <= hi) return 1.0;
+  if (val < lo) return Math.max(0, (val - minR) / (lo - minR));
+  return Math.max(0, (maxR - val) / (maxR - hi));
+}
+
+function updateFuzzy() {
+  const s = +document.getElementById('suhu-range').value;
+  const h = +document.getElementById('humid-range').value;
+  const jenis = document.getElementById('jenis-jam').value;
+  const durasi = document.getElementById('durasi').value;
+
+  document.getElementById('suhu-display').textContent = s + '°C';
+  document.getElementById('humid-display').textContent = h + '%';
+  document.getElementById('suhu-fill').style.width = (s / 50 * 100) + '%';
+  document.getElementById('humid-fill').style.width = h + '%';
+
+  let optS = [15, 22], optH = [40, 55];
+  if (jenis === 'quartz') { optS = [10, 25]; optH = [35, 60]; }
+  if (jenis === 'smartlux') { optS = [10, 30]; optH = [30, 60]; }
+
+  let durFactor = durasi === 'long' ? 0.9 : durasi === 'medium' ? 0.95 : 1.0;
+
+  const muS = calcMembership(s, optS[0], optS[1], 0, 50);
+  const muH = calcMembership(h, optH[0], optH[1], 0, 100);
+
+  // Mamdani inference — min(mu1, mu2)
+  const muFinal = Math.min(muS, muH) * durFactor;
+  // Defuzzification — centroid approximation
+  const score = Math.round(muFinal * 100);
+
+  document.getElementById('mu-suhu').style.width = (muS * 100) + '%';
+  document.getElementById('mu-suhu-txt').textContent = muS.toFixed(2);
+  document.getElementById('mu-humid').style.width = (muH * 100) + '%';
+  document.getElementById('mu-humid-txt').textContent = muH.toFixed(2);
+  document.getElementById('result-score').textContent = score;
+
+  const panel = document.getElementById('result-panel');
+  const statusEl = document.getElementById('result-status');
+  const titleEl = document.getElementById('result-title');
+  const descEl = document.getElementById('result-desc');
+  const recsEl = document.getElementById('result-recs');
+
+  panel.className = 'result-panel';
+  statusEl.className = 'result-status';
+
+  let title, desc, recs;
+  if (score >= 75) {
+    panel.classList.add('ideal');
+    statusEl.classList.add('status-ideal');
+    statusEl.textContent = 'Kondisi Ideal';
+    title = 'Penyimpanan Optimal';
+    desc = 'Lingkungan penyimpanan berada dalam rentang ideal untuk jam ' + (jenis === 'mechanical' ? 'mekanik/automatic' : jenis === 'quartz' ? 'quartz presisi' : 'smart luxury') + '. Komponen internal, lubrikasi, dan gasket terlindungi secara optimal dari degradasi.';
+    recs = [
+      'Pertahankan kondisi penyimpanan yang ada saat ini.',
+      jenis === 'mechanical' ? 'Gunakan watch winder jika jam tidak dipakai lebih dari 48 jam.' : 'Hindari paparan medan magnet kuat di area penyimpanan.',
+      'Servis mekanik berkala setiap 3–5 tahun di service center resmi.',
+      'Dokumentasikan kondisi jam secara berkala untuk keperluan asuransi.'
+    ];
+  } else if (score >= 40) {
+    panel.classList.add('warning');
+    statusEl.classList.add('status-ok');
+    statusEl.textContent = 'Perlu Perhatian';
+    title = 'Kondisi Suboptimal';
+    desc = 'Kondisi penyimpanan berada di luar rentang optimal. Paparan jangka panjang berpotensi mempengaruhi akurasi gerakan mekanik, kondisi gasket air-resistance, serta keindahan dial dan bezel.';
+    recs = [
+      'Investasikan pada dehumidifier atau hygrometer digital untuk pemantauan.',
+      'Simpan dalam watch case berbahan kayu cedar dengan seal yang baik.',
+      'Kurangi frekuensi paparan terhadap kondisi ekstrem.',
+      jenis === 'mechanical' ? 'Lakukan pemeriksaan kondisi lubrikasi lebih awal dari jadwal rutin.' : 'Monitor baterai dan kondisi seal lebih sering dari biasanya.'
+    ];
+  } else {
+    panel.classList.add('danger');
+    statusEl.classList.add('status-bad');
+    statusEl.textContent = 'Kondisi Berbahaya';
+    title = 'Risiko Kerusakan Tinggi';
+    desc = 'Kondisi ekstrem berpotensi menyebabkan kerusakan permanen pada lubrikasi mekanik, seal karet, enamel dial, serta komponen sensitif lainnya. Tindakan segera diperlukan.';
+    recs = [
+      'SEGERA pindahkan ke lingkungan penyimpanan yang terkontrol.',
+      'Bawa ke service center resmi untuk inspeksi kondisi seal dan lubrikasi.',
+      'Pertimbangkan safe deposit box beriklim terkontrol untuk koleksi bernilai tinggi.',
+      'Konsultasikan dengan boutique resmi untuk asuransi dan penilaian kondisi.'
+    ];
+  }
+
+  titleEl.textContent = title;
+  descEl.textContent = desc;
+  recsEl.innerHTML = recs.map(r => `<li><div class="rec-bullet"></div>${r}</li>`).join('');
+}
+
+// === EXPERT SYSTEM ===
+const expertAnswers = {};
+
+function selectOpt(el) {
+  const q = el.dataset.q;
+  document.querySelectorAll(`[data-q="${q}"]`).forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  expertAnswers[q] = el.dataset.v;
+  updateProgressDots();
+}
+
+function updateProgressDots() {
+  const qs = ['brand','jahitan','hw','dok','aroma'];
+  qs.forEach((q, i) => {
+    document.getElementById('pd' + i).classList.toggle('filled', !!expertAnswers[q]);
+  });
+}
+
+function runDiagnosis() {
+  const qs = ['brand','jahitan','hw','dok','aroma'];
+  for (const q of qs) {
+    if (!expertAnswers[q]) {
+      // Highlight missing
+      document.querySelectorAll(`[data-q="${q}"]`).forEach(o => {
+        o.style.borderColor = 'rgba(226,75,74,0.5)';
+        setTimeout(() => o.style.borderColor = '', 1500);
+      });
+      return;
+    }
+  }
+
+  // Forward chaining rules
+  let score = 0;
+  const factors = {};
+
+  // Jahitan (25 pts)
+  if (expertAnswers.jahitan === 'sempurna') { score += 25; factors.jahitan = { val: 'Excellent', cls: 'good' }; }
+  else if (expertAnswers.jahitan === 'minor') { score += 12; factors.jahitan = { val: 'Acceptable', cls: 'warn' }; }
+  else { score += 0; factors.jahitan = { val: 'Poor', cls: 'bad' }; }
+
+  // Hardware (25 pts)
+  if (expertAnswers.hw === 'solid') { score += 25; factors.hardware = { val: 'Authentic Grade', cls: 'good' }; }
+  else if (expertAnswers.hw === 'medium') { score += 12; factors.hardware = { val: 'Uncertain', cls: 'warn' }; }
+  else { score += 0; factors.hardware = { val: 'Non-authentic', cls: 'bad' }; }
+
+  // Dokumen (25 pts)
+  if (expertAnswers.dok === 'lengkap') { score += 25; factors.dokumen = { val: 'Complete', cls: 'good' }; }
+  else if (expertAnswers.dok === 'partial') { score += 10; factors.dokumen = { val: 'Partial', cls: 'warn' }; }
+  else { score += 0; factors.dokumen = { val: 'Missing', cls: 'bad' }; }
+
+  // Aroma (25 pts)
+  if (expertAnswers.aroma === 'genuine') { score += 25; factors.material = { val: 'Genuine Leather', cls: 'good' }; }
+  else if (expertAnswers.aroma === 'chemical') { score += 8; factors.material = { val: 'Uncertain', cls: 'warn' }; }
+  else { score += 0; factors.material = { val: 'Synthetic', cls: 'bad' }; }
+
+  // Brand bonus / penalty
+  const brand = expertAnswers.brand;
+  const brandNames = { hermes: 'Hermès', chanel: 'Chanel', lv: 'Louis Vuitton', other: 'Luxury Brand' };
+
+  // Verdict labels
+  const labels = { jahitan: 'Kualitas Jahitan', hardware: 'Hardware', dokumen: 'Dokumentasi', material: 'Material' };
+
+  // Title, detail, invests
+  let vTitle, vDetail, invests, badgeClass, badgeText;
+  if (score >= 80) {
+    vTitle = 'Sangat Meyakinkan — Kemungkinan Besar Asli';
+    badgeText = 'Authentic'; badgeClass = 'badge-authentic';
+    vDetail = `Seluruh atribut fisik konsisten dengan standar produk original ${brandNames[brand]}. Jahitan presisi, hardware berbobot dengan branding yang jelas, serta dokumen lengkap merupakan tanda keaslian utama yang sangat sulit dipalsukan.`;
+    invests = [
+      brandNames[brand] === 'Hermès' ? 'Hermès Birkin & Kelly terapresiasi rata-rata 14% per tahun dalam dekade terakhir.' : brandNames[brand] === 'Chanel' ? 'Chanel Classic Flap terapresiasi lebih dari 70% dalam 5 tahun terakhir.' : 'Louis Vuitton limited edition memiliki appreciation rate yang konsisten di pasar resale.',
+      'Dokumen lengkap meningkatkan nilai resale hingga 25–35% dibanding tanpa dokumen.',
+      'Pertimbangkan konsinyasi di lelang Sotheby\'s, Christie\'s, atau Vestiaire Collective.',
+      'Simpan tas dalam dustbag asli di lingkungan bebas lembap untuk menjaga kondisi prime.'
+    ];
+  } else if (score >= 45) {
+    vTitle = 'Meragukan — Verifikasi Lebih Lanjut Diperlukan';
+    badgeText = 'Uncertain'; badgeClass = 'badge-uncertain';
+    vDetail = `Beberapa atribut tidak memenuhi standar keaslian ${brandNames[brand]}. Disarankan verifikasi oleh authentication expert sebelum transaksi apapun.`;
+    invests = [
+      'Jangan lakukan transaksi sebelum mendapat second opinion dari authentication expert.',
+      'Gunakan layanan Entrupy, Real Real, atau authentication service brand resmi.',
+      `Periksa serial number dan date code di database resmi ${brandNames[brand]}.`,
+      'Foto detail jahitan, hardware, dan interior untuk konsultasi online.'
+    ];
+  } else {
+    vTitle = 'Indikasi Kuat Produk Non-Authentic';
+    badgeText = 'Non-Authentic'; badgeClass = 'badge-fake';
+    vDetail = `Mayoritas atribut tidak memenuhi standar produk original ${brandNames[brand]}. Hardware ringan tanpa branding, material sintetis, dan minimnya dokumen adalah indikator utama produk tiruan.`;
+    invests = [
+      'Produk ini tidak memiliki nilai investasi sebagai luxury asset.',
+      'Penjualan produk tiruan bermerek merupakan pelanggaran hukum di Indonesia (UU Merek No. 20/2016).',
+      'Gunakan platform terpercaya: Vestiaire Collective, Fashionphile, The Real Real untuk pembelian.',
+      'Kunjungi boutique resmi untuk edukasi mengenai tanda-tanda keaslian produk.'
+    ];
+  }
+
+  // Populate modal
+  document.getElementById('modal-score').textContent = score;
+  const badge = document.getElementById('modal-badge');
+  badge.textContent = badgeText;
+  badge.className = 'modal-badge ' + badgeClass;
+
+  document.getElementById('modal-verdict-grid').innerHTML = Object.entries(factors).map(([k, v]) =>
+    `<div class="modal-verdict-row">
+      <span class="modal-vkey">${labels[k]}</span>
+      <span class="modal-vval ${v.cls}">${v.val}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('modal-vtitle').textContent = vTitle;
+  document.getElementById('modal-vdetail').textContent = vDetail;
+  document.getElementById('modal-invest').innerHTML = invests.map(i =>
+    `<div class="modal-invest-item"><div class="modal-invest-dot"></div><p class="modal-invest-txt">${i}</p></div>`
+  ).join('');
+
+  // Open modal with staggered animation
+  const overlay = document.getElementById('result-modal');
+  const bar = document.getElementById('modal-bar');
+  bar.style.width = '0';
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+
+  // Trigger bar animation after modal opens
+  setTimeout(() => { bar.style.width = score + '%'; }, 300);
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('result-modal')) closeModalDirect();
+}
+function closeModalDirect() {
+  const overlay = document.getElementById('result-modal');
+  const box = document.getElementById('modal-box');
+  box.style.opacity = '0';
+  box.style.transform = 'translateY(30px) scale(0.97)';
+  setTimeout(() => {
+    overlay.classList.remove('open');
+    box.style.opacity = '';
+    box.style.transform = '';
+    document.body.style.overflow = '';
+  }, 400);
+}
+
+// Init fuzzy
+updateFuzzy();
+
+// ESC to close modal
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+</script>
+</body>
+</html>
